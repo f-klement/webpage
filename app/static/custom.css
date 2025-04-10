@@ -1,0 +1,31 @@
+/* custom.css */
+
+/* Default (light mode) */
+:root {
+    --background-color: #d3d3d3; /* light gray */
+    --btn-bg-color: #400694;     
+    --btn-border-color: #400694;
+    --btn-text-color: #fff;
+  }
+  
+  /* Dark mode */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background-color: #333333; /* dark gray */
+      --btn-bg-color: #7531f3;       /* lavender */
+      --btn-border-color: #E6E6FA;
+      --btn-text-color: #000;
+    }
+  }
+  
+  /* Apply the variables */
+  body {
+    background-color: var(--background-color);
+  }
+  
+  .btn-primary {
+    background-color: var(--btn-bg-color);
+    border-color: var(--btn-border-color);
+    color: var(--btn-text-color);
+  }
+  

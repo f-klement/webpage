@@ -1,0 +1,7 @@
+django
+itsdangerous
+gunicorn
+pycrowdsec
+python-dotenv
+apscheduler
+requests
