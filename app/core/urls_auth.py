@@ -1,12 +1,10 @@
-# core/urls_auth.py
-
 from django.urls import path
-from . import views_auth
+from core.views_auth import confirm_email, approve_account, register, login, logout
 
 urlpatterns = [
-    path('register/', views_auth.register, name='auth_register'),
-    path('confirm/<str:token>/', views_auth.confirm_email, name='auth_confirm'),
-    path('approve/<str:token>/', views_auth.approve_account, name='auth_approve'),
-    path('login/', views_auth.login, name='auth_login'),
-    path('logout/', views_auth.logout, name='auth_logout'),
+    path('confirm/<str:token>/', confirm_email, name='auth_confirm'),
+    path('approve/<str:token>/', approve_account, name='auth_approve'),
+    path('register/', register, name='auth_register'),
+    path('login/', login, name='auth_login'),
+    path('logout/', logout, name='auth_logout'),
 ]

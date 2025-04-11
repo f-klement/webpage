@@ -56,12 +56,35 @@ def register(request):
         new_user.save()
         
         # Generate tokens and URLs for email confirmation and admin approval.
+        # Generate tokens
         token = generate_confirmation_token(new_user)
-        confirm_url = request.build_absolute_uri(reverse("auth_confirm", kwargs={"token": token}))
-        
-        admin_token = generate_confirmation_token(new_user)
-        approve_url = request.build_absolute_uri(reverse("auth_approve", kwargs={"token": admin_token}))
-        
+        admin_token = generate_confirmation_token(new_user) # Can reuse the same token type
+
+        # --- URL Generation ---
+        # 1. Get relative paths using reverse()
+        relative_confirm_path = reverse("auth_confirm", kwargs={"token": token})
+        relative_approve_path = reverse("auth_approve", kwargs={"token": admin_token})
+
+        # 2. Get the public facing domain name (MUST be set in your .env)
+        #    Use the same variable Traefik uses, e.g., HOSTNAME
+        public_domain = os.environ.get('HOSTNAME')
+
+        # 3. Check if domain is set and construct HTTPS URLs
+        if public_domain:
+            confirm_url = f"https://{public_domain}{relative_confirm_path}"
+            approve_url = f"https://{public_domain}{relative_approve_path}"
+        else:
+            # Fallback (will likely still be HTTP) or handle error
+            messages.error(request, "Server configuration error: HOSTNAME environment variable not set.")
+            logging.error("CRITICAL: HOSTNAME environment variable not set for URL generation.")
+            # Maybe redirect back with error, or use a default that might fail
+            # Forcing a potentially wrong URL is bad, better to error out here.
+            # As a last resort fallback (use with caution):
+            # confirm_url = request.build_absolute_uri(relative_confirm_path)
+            # approve_url = request.build_absolute_uri(relative_approve_path)
+            # Or simply:
+            return redirect(reverse("auth_register")) # Redirect back with error message shown
+
         # Prepare email subjects and message content.
         subject_user = "Please confirm your email"
         subject_admin = "New user registration approval required"

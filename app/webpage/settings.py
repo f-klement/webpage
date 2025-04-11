@@ -189,6 +189,24 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
 ]
 
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://" + os.environ.get("HOSTNAME", ""),
+]
+
+# Trust the X-Forwarded-Host header from Traefik for request.get_host()
+USE_X_FORWARDED_HOST = True
+
+# Optional, but recommended for production security:
+# Redirect all non-HTTPS requests to HTTPS (ensure Traefik doesn't do this too)
+SECURE_SSL_REDIRECT = True
+# Ensure session cookies are only sent over HTTPS
+SESSION_COOKIE_SECURE = True
+# Ensure CSRF cookies are only sent over HTTPS
+CSRF_COOKIE_SECURE = True
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
