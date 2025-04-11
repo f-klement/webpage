@@ -29,12 +29,20 @@ RUN pip install -r requirements.txt
 # Expose the application port
 EXPOSE 5000
 
+WORKDIR /home/appuser/app/app
+
 # Define environment variables for Django
 ENV DJANGO_SETTINGS_MODULE=webpage.settings
 ENV PYTHONUNBUFFERED=1
 ENV DEBUG=False
 
+# Define a build argument for the secret key
+ARG LOGIN_SECRET_KEY
+ENV LOGIN_SECRET_KEY=${LOGIN_SECRET_KEY}
+
 RUN python3 manage.py makemigrations core
 RUN python3 manage.py migrate
+RUN python3 manage.py collectstatic --noinput
+
 # Run the application with gunicorn
-CMD ["python3", "-m", "gunicorn","--chdir", "/home/appuser/app",  "--bind", "0.0.0.0:5000", "--workers", "8", "webpage.wsgi:application"]
+CMD ["python3", "-m", "gunicorn","--chdir", "/home/appuser/app/app",  "--bind", "0.0.0.0:5000", "--workers", "8", "webpage.wsgi:application"]
