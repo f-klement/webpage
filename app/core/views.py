@@ -22,6 +22,8 @@ def about(request):
 def contact(request):
     return render(request, 'contact.html')
 
+public_domain = os.environ.get('HOSTNAME')
+
 @login_required
 def services(request):
     logging.info(f"User {request.user.id} accessed the services page")
@@ -31,13 +33,18 @@ def services(request):
 def nextcloud(request):
     logging.info(f"User {request.user.id} clicked Nextcloud")
     # Redirect to the external Nextcloud service.
-    return redirect("https://web.localghost.org/nextcloud")
+    return redirect(f"https://{public_domain}/nextcloud")
 
 @login_required
 def jellyfin(request):
     logging.info(f"User {request.user.id} clicked Jellyfin")
     # Redirect to the external Jellyfin service.
-    return redirect("https://web.localghost.org/jellyfin/")
+    return redirect(f"https://{public_domain}/jellyfin/")
+
+def GhostLog(request):
+    logging.info(f"User {request.user.id} clicked GhostLog")
+    # Redirect to the external Wordpress service.
+    return redirect(f"https://{public_domain}/GhostLog")
 
 def blog(request):
     return render(request, 'blog.html')

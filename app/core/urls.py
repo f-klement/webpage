@@ -13,6 +13,7 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('services/', views.services, name='services'),
     path('services/nextcloud/', views.nextcloud, name='nextcloud'),
+    path('ghostblog/', views.GhostLog, name='GhostLog'),
     path('services/jellyfin/', views.jellyfin, name='jellyfin'),
     path('blog/', views.blog, name='blog'),
     path('favicon.ico', views.favicon, name='favicon'),
