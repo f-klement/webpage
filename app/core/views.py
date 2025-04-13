@@ -41,7 +41,7 @@ def jellyfin(request):
     # Redirect to the external Jellyfin service.
     return redirect(f"https://{public_domain}/jellyfin/")
 
-def GhostLog(request):
+def ghostblog(request):
     logging.info(f"User {request.user.id} clicked GhostLog")
     # Redirect to the external Wordpress service.
     return redirect(f"https://{public_domain}/GhostLog")

@@ -34,7 +34,7 @@ WORKDIR /home/appuser/app/app
 # Define environment variables for Django
 ENV DJANGO_SETTINGS_MODULE=webpage.settings
 ENV PYTHONUNBUFFERED=1
-ENV DEBUG=False
+ENV DEBUG="False"
 
 # Define a build argument for the secret key
 ARG LOGIN_SECRET_KEY
