@@ -41,16 +41,16 @@ def jellyfin(request):
     # Redirect to the external Jellyfin service.
     return redirect(f"https://{public_domain}/jellyfin/")
 
-def ghostblog(request):
-    logging.info(f"User {request.user.id} clicked GhostLog")
-    # Redirect to the external Wordpress service.
-    return redirect(f"https://{public_domain}/GhostLog")
+# def ghostblog(request):
+#     logging.info(f"User {request.user.id} clicked GhostLog")
+#     # Redirect to the external Wordpress service.
+#     return redirect(f"https://{public_domain}/GhostLog/")
 
-def blog(request):
-    return render(request, 'blog.html')
+# def blog(request):
+#     return render(request, 'blog.html')
 
 def favicon(request):
     # Serve the favicon from the static files. Here we assume your favicon.ico
     # is located in the "main/static" directory.
-    favicon_path = os.path.join(settings.BASE_DIR, 'main', 'static', 'favicon.ico')
+    favicon_path = os.path.join(settings.BASE_DIR, 'static', 'favicon.ico')
     return FileResponse(open(favicon_path, 'rb'), content_type='image/vnd.microsoft.icon')
