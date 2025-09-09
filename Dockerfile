@@ -5,6 +5,9 @@ FROM python:3.13-slim
 RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
+# Install uv system-wide as root for better caching and path management
+RUN pip install uv
+
 # Create a non-root user and group
 RUN groupadd --gid 1000 appgroup && \
     useradd --uid 1000 --gid appgroup --create-home appuser
@@ -15,16 +18,19 @@ WORKDIR /home/appuser/app
 # Create the directory for the database
 RUN mkdir -p /home/appuser/app/data && chown -R appuser:appgroup /home/appuser/app/data
 
+# Install dependencies
+COPY --chown=appuser:appgroup requirements.txt .
+
+# Install dependencies from the lockfile using uv.
+# 'uv pip sync' is much faster than 'pip install -r' and uses the system-wide uv.
+RUN uv pip sync --system --no-cache requirements.txt
+
 # Copy the current directory contents into the container
 COPY --chown=appuser:appgroup . /home/appuser/app
 RUN chown -R appuser:appgroup /home/appuser/app
 
 # Switch to the non-root user
 USER appuser
-
-# Install dependencies
-COPY requirements.txt .
-RUN pip install -r requirements.txt
 
 # Expose the application port
 EXPOSE 5000

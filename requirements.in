@@ -1,0 +1,9 @@
+django
+whitenoise
+itsdangerous
+gunicorn
+pycrowdsec
+python-dotenv
+apscheduler
+requests
+aikido-zen
